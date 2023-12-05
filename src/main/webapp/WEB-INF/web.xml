@@ -2,11 +2,19 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
   <servlet>
     <servlet-name>CalcRectangle</servlet-name>
-    <servlet-class>com.tuanpnt17.jspservlet.CalcRectangle</servlet-class>
+    <servlet-class>com.tuanpnt17.jspservlet.controller.CalcRectangle</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>StudentServlet</servlet-name>
+    <servlet-class>com.tuanpnt17.jspservlet.controller.StudentServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>CalcRectangle</servlet-name>
     <url-pattern>/calc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>StudentServlet</servlet-name>
+    <url-pattern>/student</url-pattern>
   </servlet-mapping>
   <session-config>
     <session-timeout>

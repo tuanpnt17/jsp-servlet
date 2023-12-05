@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package com.tuanpnt17.jspservlet;
+package com.tuanpnt17.jspservlet.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,12 +10,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-public class CalcRectangle extends HttpServlet {
+public class StudentServlet extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,11 +35,10 @@ public class CalcRectangle extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-      out.println("<title>Servlet CalcRectangle</title>");
+      out.println("<title>Servlet StudentServlet</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet CalcRectangle at " + request.getContextPath() + "</h1>");
+      out.println("<h1>Servlet StudentServlet at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -56,7 +56,7 @@ public class CalcRectangle extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    request.getRequestDispatcher("rectangle.html").forward(request, response);
+    request.getRequestDispatcher("StudentForm.html").forward(request, response);
   }
 
   /**
@@ -70,20 +70,47 @@ public class CalcRectangle extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    String heightRaw = request.getParameter("height");
-    String widthRaw = request.getParameter("width");
-    String[] checkBoxValue = request.getParameterValues("calcType");
-    double height, width;
-    String output;
     PrintWriter out = response.getWriter();
+//    Enumeration paramNames = request.getParameterNames();
+//    while (paramNames.hasMoreElements()) {
+//      out.println(paramNames.nextElement());
+//    }
+
+    String firstName = request.getParameter("firstname");
+    String lastName = request.getParameter("lastname");
+    String gender = request.getParameter("gender");
+    String mark = request.getParameter("mark");
+    String subject = request.getParameter("subject");
+    String subjectName = convertToSubjectName(subject);
+    String output = "";
     try {
-      height = Double.parseDouble(heightRaw);
-      width = Double.parseDouble(widthRaw);
-      output = calculateService(height, width, checkBoxValue);
-      printScreen(out, output);
+      double markNum = Double.parseDouble(mark);
+      if (gender.equals("male")) {
+        output += "Hello Mr." + firstName;
+      } else {
+        output += "Hello Miss." + lastName;
+      }
+      if (markNum >= 5) {
+        output += ". Congratulation " + firstName + " passed " + subjectName;
+      } else {
+        output += ". So sorry, " + firstName + " failed " + subjectName;
+      }
     } catch (NumberFormatException e) {
       System.out.println(e);
     }
+    printScreen(out, output);
+  }
+
+  private void printScreen(PrintWriter out, String output) {
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<title>Servlet CalcRectangle</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h2 style='color: green'>" + output + "</h2>");
+    out.println("</body>");
+    out.println("</html>");
   }
 
   /**
@@ -96,44 +123,14 @@ public class CalcRectangle extends HttpServlet {
     return "Short description";
   }// </editor-fold>
 
-  private String calculateService(double height, double width, String[] checkBoxValue) {
-    if (height <= 0) {
-      return "<h2 style='color: red'>Height must not be less than or equal to 0</h2>";
+  private String convertToSubjectName(String subject) {
+    if (subject.equals("1")) {
+      return "PRJ301";
     }
-    if (width <= 0) {
-      return "<h2 style='color: red'>Width must not be less than or equal to 0</h2>";
+    if (subject.equals("2")) {
+      return "JPD123";
     }
-    if (checkBoxValue == null) {
-      return "<h2 style='color: red'>Chưa chọn check box</h2>";
-    }
-    if (checkBoxValue.length == 2) {
-      return "<h2 style='color: blue'>Chu vi: " + calcChuvi(height, width) + "</h2>\n"
-              + "<h2 style='color: orange'>Dien tich: " + calcDienTich(height, width) + "</h2>";
-    }
-    if (checkBoxValue[0].equalsIgnoreCase("chuvi")) {
-      return "<h2 style='color: blue'>Chu vi: " + calcChuvi(height, width) + "</h2>";
-    }
-    return "<h2 style='color: orange'>Dien tich: " + calcDienTich(height, width) + "</h2>";
-  }
-
-  private void printScreen(PrintWriter out, String output) {
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<title>Servlet CalcRectangle</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println(output);
-    out.println("</body>");
-    out.println("</html>");
-  }
-
-  private double calcChuvi(double height, double width) {
-    return (height + width) * 2;
-  }
-
-  private double calcDienTich(double height, double width) {
-    return height * width;
+    return "PRN211";
   }
 
 }

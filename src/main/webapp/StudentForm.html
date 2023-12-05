@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+  <head>
+    <title>Student form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h2>Welcome to Student Form</h2>
+    <form action="student" method="post">
+      FirstName: <input type="text" name="firstname"> <br/>
+      LastName: <input type="text" name="lastname"> <br/>
+      Gender: &nbsp;&nbsp;<input type="radio" name="gender" value="male"> Male
+      &nbsp;&nbsp;<input type="radio" name="gender" value="female"> Female <br/>
+      Mark: <input type="text" name="mark"> <br/>
+      <label for="subject">Subject</label>
+      <select id="subject" name="subject">
+        <option value="1">PRJ301</option>
+        <option value="2">JPD123</option>
+        <option value="3">PRN221</option>
+      </select>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

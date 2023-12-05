@@ -72,8 +72,27 @@ public class LoginServlet extends HttpServlet {
     String user = request.getParameter("username");
     String pass = request.getParameter("password");
     PrintWriter out = response.getWriter();
-    String message = validateUser(user, pass);
+    String message = validateUserWithInitParam(user, pass);
     this.printScreen(out, message);
+  }
+
+  private String validateUserWithInitParam(String user, String pass) {
+    String user_init = getServletContext().getInitParameter("user");
+    String pass_init = getServletContext().getInitParameter("pass");
+    String message = "";
+    if (user.isBlank()) {
+      message += "<h2 style='color: red'>Name is not blank</h2>";
+      return message;
+    }
+    if (pass.isBlank()) {
+      message += "<h2 style='color: red'>Pass is not blank</h2>";
+      return message;
+    }
+    if (!user.equalsIgnoreCase(user_init) && !pass.equals(pass_init)) {
+      message += "<h2 style='color: red'>Login failed</h2>";
+      return message;
+    }
+    return "<h2 style='color: green'>Hello " + user + "</h2>";
   }
 
   private String validateUser(String user, String pass) {

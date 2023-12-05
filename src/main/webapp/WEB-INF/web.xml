@@ -13,4 +13,13 @@
       30
     </session-timeout>
   </session-config>
+  <context-param>
+    <param-name>user</param-name>
+    <param-value>tuanpnt17</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>pass</param-name>
+    <param-value>6803</param-value>
+  </context-param>
 </web-app>

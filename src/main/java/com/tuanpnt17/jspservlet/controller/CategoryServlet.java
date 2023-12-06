@@ -4,6 +4,9 @@
  */
 package com.tuanpnt17.jspservlet.controller;
 
+import com.tuanpnt17.jspservlet.model.dto.Category;
+import com.tuanpnt17.jspservlet.service.CategoryService;
+import com.tuanpnt17.jspservlet.service.CategoryServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,13 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-@WebServlet(name = "MyServlet", urlPatterns = {"/calc"})
-public class MyServlet extends HttpServlet {
+@WebServlet(name = "CategoryServlet", urlPatterns = {"/list"})
+public class CategoryServlet extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,12 +40,10 @@ public class MyServlet extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<title>Servlet MyServlet</title>");
+      out.println("<title>Servlet CategoryServlet</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet MyServlet at " + request.getContextPath() + "</h1>");
-      out.println("<h3 style='color: red'>by TuanPNT17</h3>");
-      out.println(this.getServletInfo());
+      out.println("<h1>Servlet CategoryServlet at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -59,8 +61,10 @@ public class MyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    request.getRequestDispatcher("calc.html")
-            .forward(request, response);
+    CategoryService categoryService = CategoryServiceImpl.getInstance();
+    List<Category> list = categoryService.getCategoryList();
+    request.setAttribute("data", list);
+    request.getRequestDispatcher("home.jsp").forward(request, response);
   }
 
   /**
@@ -74,17 +78,12 @@ public class MyServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    String heightRaw = request.getParameter("height");
-    String widthRaw = request.getParameter("width");
-    double height, width;
-    PrintWriter out = response.getWriter();
-    try {
-      height = Double.parseDouble(heightRaw);
-      width = Double.parseDouble(widthRaw);
-      out.println("Area = " + height * width);
-    } catch (NumberFormatException e) {
-      System.out.println(e);
-    }
+    processRequest(request, response);
+  }
+
+  @Override
+  protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    super.doPut(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
   }
 
   /**
@@ -94,7 +93,13 @@ public class MyServlet extends HttpServlet {
    */
   @Override
   public String getServletInfo() {
-    return "Short description by tuanpnt";
+    return "Short description";
   }// </editor-fold>
 
+  public static void main(String[] args) {
+    CategoryService categoryService = CategoryServiceImpl.getInstance();
+    List<Category> list = categoryService.getCategoryList();
+
+    list.stream().forEach(System.out::println);
+  }
 }

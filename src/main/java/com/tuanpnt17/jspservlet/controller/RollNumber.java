@@ -7,16 +7,18 @@ package com.tuanpnt17.jspservlet.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
+import java.text.Bidi;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-public class StudentServlet extends HttpServlet {
+@WebServlet(name = "RollNumber", urlPatterns = {"/roll"})
+public class RollNumber extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +37,10 @@ public class StudentServlet extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<title>Servlet StudentServlet</title>");
+      out.println("<title>Servlet RollNumber</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet StudentServlet at " + request.getContextPath() + "</h1>");
+      out.println("<h1>Servlet RollNumber at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -56,7 +58,7 @@ public class StudentServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    request.getRequestDispatcher("StudentForm.html").forward(request, response);
+    request.getRequestDispatcher("rollnumber.jsp").forward(request, response);
   }
 
   /**
@@ -70,47 +72,25 @@ public class StudentServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    PrintWriter out = response.getWriter();
-//    Enumeration paramNames = request.getParameterNames();
-//    while (paramNames.hasMoreElements()) {
-//      out.println(paramNames.nextElement());
-//    }
-
-    String firstName = request.getParameter("firstname");
-    String lastName = request.getParameter("lastname");
-    String gender = request.getParameter("gender");
-    String mark = request.getParameter("mark");
-    String subject = request.getParameter("subject");
-    String subjectName = convertToSubjectName(subject);
-    String output = "";
+    String numStr = request.getParameter("num");
+//    String rollNumber = (String) request.getAttribute("myRN");
+    String rollNumber = "SE173039";
+    String result = "";
     try {
-      double markNum = Double.parseDouble(mark);
-      if (gender.equals("male")) {
-        output += "Hello Mr." + firstName;
-      } else {
-        output += "Hello Miss." + lastName;
+      int num = Integer.parseInt(numStr);
+      if (num <= 0) {
+        throw new Exception();
       }
-      if (markNum >= 5) {
-        output += ". Congratulation " + firstName + " passed " + subjectName;
+      if (num > rollNumber.length()) {
+        result += "Your first " + rollNumber.length() + " letter(s) is/are:" + rollNumber;
       } else {
-        output += ". So sorry, " + firstName + " failed " + subjectName;
+        result += "Your first " + num + " letter(s) is/are:" + rollNumber.substring(0, num);
       }
-    } catch (NumberFormatException e) {
-      System.out.println(e);
+    } catch (Exception e) {
+      result += "Input string does not represent the positive integer";
     }
-    printScreen(out, output);
-  }
-
-  private void printScreen(PrintWriter out, String output) {
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<title>Servlet CalcRectangle</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h2 style='color: green'>" + output + "</h2>");
-    out.println("</body>");
-    out.println("</html>");
+    request.setAttribute("result", result);
+    request.getRequestDispatcher("rollnumber.jsp").forward(request, response);
   }
 
   /**
@@ -122,15 +102,5 @@ public class StudentServlet extends HttpServlet {
   public String getServletInfo() {
     return "Short description";
   }// </editor-fold>
-
-  private String convertToSubjectName(String subject) {
-    if (subject.equals("1")) {
-      return "PRJ301";
-    }
-    if (subject.equals("2")) {
-      return "JPD123";
-    }
-    return "PRN211";
-  }
 
 }

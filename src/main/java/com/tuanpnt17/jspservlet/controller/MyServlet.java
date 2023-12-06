@@ -59,7 +59,7 @@ public class MyServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    request.getRequestDispatcher("calc.html")
+    request.getRequestDispatcher("area.jsp")
             .forward(request, response);
   }
 
@@ -77,11 +77,12 @@ public class MyServlet extends HttpServlet {
     String heightRaw = request.getParameter("height");
     String widthRaw = request.getParameter("width");
     double height, width;
-    PrintWriter out = response.getWriter();
     try {
       height = Double.parseDouble(heightRaw);
       width = Double.parseDouble(widthRaw);
-      out.println("Area = " + height * width);
+      double result = height * width;
+      request.setAttribute("result", result);
+      request.getRequestDispatcher("area.jsp").forward(request, response);
     } catch (NumberFormatException e) {
       System.out.println(e);
     }

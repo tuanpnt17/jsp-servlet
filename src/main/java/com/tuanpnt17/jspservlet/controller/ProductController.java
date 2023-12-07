@@ -4,8 +4,12 @@
  */
 package com.tuanpnt17.jspservlet.controller;
 
+import com.tuanpnt17.jspservlet.model.dto.Category;
+import com.tuanpnt17.jspservlet.model.dto.Product;
 import com.tuanpnt17.jspservlet.service.CategoryService;
 import com.tuanpnt17.jspservlet.service.CategoryServiceImpl;
+import com.tuanpnt17.jspservlet.service.ProductService;
+import com.tuanpnt17.jspservlet.service.ProductServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +17,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-@WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
-public class DeleteController extends HttpServlet {
+@WebServlet(name = "ProductController", urlPatterns = {"/product-list"})
+public class ProductController extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +44,10 @@ public class DeleteController extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<title>Servlet DeleteController</title>");
+      out.println("<title>Servlet ProductController</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet DeleteController at " + request.getContextPath() + "</h1>");
+      out.println("<h1>Servlet ProductController at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -59,16 +65,22 @@ public class DeleteController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    String idStr = request.getParameter("id");
     CategoryService categoryService = CategoryServiceImpl.getInstance();
-    try {
-      int id = Integer.parseInt(idStr);
-      categoryService.deleteCategory(id);
-//      request.getRequestDispatcher("list").forward(request, response);
-      response.sendRedirect("category");
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+    ProductService productService = ProductServiceImpl.getInstance();
+
+    String cidStr = request.getParameter("cid");
+    String key = request.getParameter("key");
+    String fromprice = request.getParameter("fromprice");
+    String toprice = request.getParameter("toprice");
+    String fromdate = request.getParameter("fromdate");
+    String todate = request.getParameter("todate");
+
+    List<Product> pList = productService.search(cidStr, key, fromprice, toprice, fromdate, todate);
+    HttpSession httpSession = request.getSession();
+    httpSession.setAttribute("cList", categoryService.getCategoryList());
+
+    request.setAttribute("pList", pList);
+    request.getRequestDispatcher("index.jsp").forward(request, response);
   }
 
   /**

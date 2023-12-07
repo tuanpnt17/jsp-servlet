@@ -90,7 +90,7 @@ public class UpdateController extends HttpServlet {
     try {
       int id = Integer.parseInt(idStr);
       categoryService.updateCategory(new Category(id, name, describe));
-      response.sendRedirect("list");
+      response.sendRedirect("category");
     } catch (Exception e) {
       System.out.println(e);
     }

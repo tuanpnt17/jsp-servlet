@@ -16,7 +16,7 @@
   <body>
     <div class="m-auto max-w-[500px] p-3 mt-3">
       <h2 class="mb-3 text-center text-3xl font-medium uppercase">Add New Category</h2>
-      <form action="list" method="post" class="grid grid-cols-1">
+      <form action="category" method="post" class="grid grid-cols-1">
         <div class="sm:col-span-3 mb-4">
           <label for="c-id" class="block text-sm font-medium leading-6 text-gray-900">Category ID <span class="text-red-500 ml-2">${requestScope.duplicateID}</span></label>
           <div class="mt-2">
@@ -40,7 +40,7 @@
 
         <div>
           <input type="submit" value="Save" class="inline-block bg-green-400 px-5 py-2 rounded-lg hover:bg-green-300 transition-all cursor-pointer">
-          <a href="list" class="inline-block bg-red-400 px-5 py-2 rounded-lg  hover:bg-red-300 transition-all cursor-pointer">Cancle</a>
+          <a href="category" class="inline-block bg-red-400 px-5 py-2 rounded-lg  hover:bg-red-300 transition-all cursor-pointer">Cancle</a>
 
         </div>
       </form>

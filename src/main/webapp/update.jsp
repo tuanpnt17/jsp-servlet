@@ -42,7 +42,7 @@
 
         <div>
           <input type="submit" value="Update" class="inline-block bg-green-400 px-5 py-2 rounded-lg hover:bg-green-300 transition-all cursor-pointer">
-          <a href="list" class="inline-block bg-red-400 px-5 py-2 rounded-lg  hover:bg-red-300 transition-all cursor-pointer">Cancle</a>
+          <a href="category" class="inline-block bg-red-400 px-5 py-2 rounded-lg  hover:bg-red-300 transition-all cursor-pointer">Cancle</a>
 
         </div>
       </form>

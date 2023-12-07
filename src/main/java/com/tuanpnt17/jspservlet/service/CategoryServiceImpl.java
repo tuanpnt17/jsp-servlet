@@ -33,4 +33,29 @@ public class CategoryServiceImpl implements CategoryService {
     return categoryDAO.getAll();
   }
 
+  @Override
+  public boolean addNewCategory(Category category) {
+    Category c = this.getCategoryByID(category.getId());
+    if (c != null) {
+      return false;
+    }
+    categoryDAO.persist(category);
+    return true;
+  }
+
+  @Override
+  public Category getCategoryByID(int id) {
+    return categoryDAO.getOne(id);
+  }
+
+  @Override
+  public void deleteCategory(int id) {
+    categoryDAO.remove(id);
+  }
+
+  @Override
+  public void updateCategory(Category category) {
+    categoryDAO.update(category);
+  }
+
 }

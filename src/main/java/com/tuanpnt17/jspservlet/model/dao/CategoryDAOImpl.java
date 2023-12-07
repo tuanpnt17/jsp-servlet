@@ -8,6 +8,7 @@ import com.tuanpnt17.jspservlet.model.dto.Category;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +55,74 @@ public class CategoryDAOImpl implements CategoryDAO {
       Logger.getLogger(CategoryDAOImpl.class.getName()).log(Level.SEVERE, null, e);
     }
     return categoryList;
+  }
+
+  @Override
+  public Category getOne(int id) {
+    PreparedStatement ps;
+    ResultSet rs;
+    try {
+      String sql = "SELECT * FROM Categories WHERE id = ?";
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, id);
+      rs = ps.executeQuery();
+      if (rs.next()) {
+        return new Category(rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("describe"));
+      }
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+    return null;
+  }
+
+  @Override
+  public void persist(Category category) {
+    PreparedStatement stm;
+    ResultSet rs;
+    try {
+      String sql = "INSERT INTO Categories VALUES (?, ?, ?)";
+      stm = conn.prepareStatement(sql);
+      stm.setInt(1, category.getId());
+      stm.setString(2, category.getName());
+      stm.setString(3, category.getDescribe());
+      stm.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+  }
+
+  @Override
+  public void remove(int id) {
+    PreparedStatement stm;
+    ResultSet rs;
+    try {
+      String sql = "DELETE FROM Categories WHERE id = ?";
+      stm = conn.prepareStatement(sql);
+      stm.setInt(1, id);
+      stm.executeUpdate();
+    } catch (SQLException e) {
+      System.out.println(e);
+    }
+  }
+
+  @Override
+  public void update(Category category) {
+    PreparedStatement stm;
+    try {
+      String sql = "UPDATE [dbo].[Categories]\n"
+              + "   SET [name] = ?\n"
+              + "      ,[describe] = ?\n"
+              + " WHERE id = ?";
+      stm = conn.prepareStatement(sql);
+      stm.setString(1, category.getName());
+      stm.setString(2, category.getDescribe());
+      stm.setInt(3, category.getId());
+      stm.executeUpdate();
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 
 }

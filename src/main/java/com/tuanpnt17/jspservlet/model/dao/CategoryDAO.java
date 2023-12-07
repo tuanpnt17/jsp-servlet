@@ -14,4 +14,12 @@ import java.util.*;
 public interface CategoryDAO {
 
   List<Category> getAll();
+
+  public Category getOne(int id);
+
+  public void persist(Category category);
+
+  public void remove(int id);
+
+  public void update(Category category);
 }

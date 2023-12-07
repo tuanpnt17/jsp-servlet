@@ -14,14 +14,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-@WebServlet(name = "CategoryServlet", urlPatterns = {"/list"})
-public class CategoryServlet extends HttpServlet {
+@WebServlet(name = "UpdateController", urlPatterns = {"/update"})
+public class UpdateController extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +39,10 @@ public class CategoryServlet extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<title>Servlet CategoryServlet</title>");
+      out.println("<title>Servlet UpdateController</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet CategoryServlet at " + request.getContextPath() + "</h1>");
+      out.println("<h1>Servlet UpdateController at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -61,10 +60,16 @@ public class CategoryServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
+    String idStr = request.getParameter("id");
     CategoryService categoryService = CategoryServiceImpl.getInstance();
-    List<Category> list = categoryService.getCategoryList();
-    request.setAttribute("data", list);
-    request.getRequestDispatcher("home.jsp").forward(request, response);
+    try {
+      int id = Integer.parseInt(idStr);
+      Category category = categoryService.getCategoryByID(id);
+      request.setAttribute("category", category);
+      request.getRequestDispatcher("update.jsp").forward(request, response);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 
   /**
@@ -84,13 +89,8 @@ public class CategoryServlet extends HttpServlet {
     CategoryService categoryService = CategoryServiceImpl.getInstance();
     try {
       int id = Integer.parseInt(idStr);
-      boolean isSuccess = categoryService.addNewCategory(new Category(id, name, describe));
-      if (isSuccess) {
-        doGet(request, response);
-      } else {
-        request.setAttribute("duplicateID", "ID is already existed!!!");
-        request.getRequestDispatcher("add.jsp").forward(request, response);
-      }
+      categoryService.updateCategory(new Category(id, name, describe));
+      response.sendRedirect("list");
     } catch (Exception e) {
       System.out.println(e);
     }
@@ -106,10 +106,4 @@ public class CategoryServlet extends HttpServlet {
     return "Short description";
   }// </editor-fold>
 
-  public static void main(String[] args) {
-    CategoryService categoryService = CategoryServiceImpl.getInstance();
-    List<Category> list = categoryService.getCategoryList();
-
-    list.stream().forEach(System.out::println);
-  }
 }

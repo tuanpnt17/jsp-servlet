@@ -15,9 +15,10 @@
 
   </head>
   <body>
-    <div class="m-auto max-w-[1024px] p-3">
+    <%@include file="header.jsp" %>
+    <div class="mx-auto mt-[45px] max-w-[1024px] p-3">
       <h1 class="mb-3 text-center text-3xl font-medium uppercase">The list of categories</h1>
-      <a href="add.jsp" class="relative left-[50%] mb-5 inline-block translate-x-[-50%] rounded-md bg-red-300 p-2 transition-all hover:bg-blue-400">Add New Category</a>
+      <a href="check?action=add" class="relative left-[50%] mb-5 inline-block translate-x-[-50%] rounded-md bg-red-300 p-2 transition-all hover:bg-blue-400">Add New Category</a>
       <table class="min-w-full table-auto text-center text-sm font-light">
         <thead class="border-b bg-neutral-800 font-medium text-white">
           <tr>
@@ -35,7 +36,7 @@
               <td class="whitespace-nowrap px-6 py-4 font-normal">${category.name}</td>
               <td class="whitespace-pre-wrap px-6 py-4 font-normal min-w-[100px]">${category.describe}</td>
               <td class="whitespace-nowrap px-1 py-4 max-w-[100px]">
-                <a href="update?id=${category.id}" class="mr-1 rounded-lg bg-green-400 px-3 py-2 text-base font-normal transition-all hover:bg-green-700 hover:text-white">Update</a>
+                <a href="check?action=update&cid=${category.id}" class="mr-1 rounded-lg bg-green-400 px-3 py-2 text-base font-normal transition-all hover:bg-green-700 hover:text-white">Update</a>
                 <a href="#" onclick="doDelete('${category.id}')" class="rounded-lg bg-red-600 px-3 py-2 text-base font-normal transition-all hover:bg-red-400 hover:text-white">Delete</a>
               </td>
             </tr>
@@ -47,7 +48,7 @@
     <script>
       function doDelete(id) {
         if (confirm("Do you want to DELETE the category with id: " + id)) {
-          window.location = "delete?id=" + id;
+          window.location = "check?action=delete&cid=" + id;
         }
       }
     </script>

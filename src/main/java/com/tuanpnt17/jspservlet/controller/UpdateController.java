@@ -60,7 +60,7 @@ public class UpdateController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    String idStr = request.getParameter("id");
+    String idStr = (String) request.getAttribute("cid");
     CategoryService categoryService = CategoryServiceImpl.getInstance();
     try {
       int id = Integer.parseInt(idStr);

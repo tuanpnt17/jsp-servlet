@@ -4,8 +4,9 @@
  */
 package com.tuanpnt17.jspservlet.controller;
 
-import com.tuanpnt17.jspservlet.service.CategoryService;
-import com.tuanpnt17.jspservlet.service.CategoryServiceImpl;
+import com.tuanpnt17.jspservlet.model.dto.Account;
+import com.tuanpnt17.jspservlet.service.AuthenService;
+import com.tuanpnt17.jspservlet.service.AuthenServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author TuanPNTSE173039
  */
-@WebServlet(name = "DeleteController", urlPatterns = {"/delete"})
-public class DeleteController extends HttpServlet {
+@WebServlet(name = "RegisterController", urlPatterns = {"/register"})
+public class RegisterController extends HttpServlet {
 
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +40,10 @@ public class DeleteController extends HttpServlet {
       out.println("<!DOCTYPE html>");
       out.println("<html>");
       out.println("<head>");
-      out.println("<title>Servlet DeleteController</title>");
+      out.println("<title>Servlet RegisterController</title>");
       out.println("</head>");
       out.println("<body>");
-      out.println("<h1>Servlet DeleteController at " + request.getContextPath() + "</h1>");
+      out.println("<h1>Servlet RegisterController at " + request.getContextPath() + "</h1>");
       out.println("</body>");
       out.println("</html>");
     }
@@ -59,16 +61,7 @@ public class DeleteController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    String idStr = (String) request.getAttribute("cid");
-    CategoryService categoryService = CategoryServiceImpl.getInstance();
-    try {
-      int id = Integer.parseInt(idStr);
-      categoryService.deleteCategory(id);
-//      request.getRequestDispatcher("list").forward(request, response);
-      response.sendRedirect("category");
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+    request.getRequestDispatcher("register.jsp").forward(request, response);
   }
 
   /**
@@ -82,7 +75,29 @@ public class DeleteController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    processRequest(request, response);
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
+    String confirmPass = request.getParameter("confirm");
+
+    AuthenService authenService = AuthenServiceImpl.getInstance();
+    HttpSession session = request.getSession();
+
+    if (!password.equals(confirmPass)) {
+      request.setAttribute("failMatch", "Not match");
+      request.getRequestDispatcher("register.jsp").forward(request, response);
+      return;
+    }
+    Account account = authenService.getAccount(username);
+    if (account != null) {
+      request.setAttribute("failMessage", username + " is already existed!!!");
+      request.getRequestDispatcher("register.jsp").forward(request, response);
+      return;
+    }
+
+    account = authenService.addNewAccount(username, password);
+
+    session.setAttribute("account", account);
+    response.sendRedirect("welcome.jsp");
   }
 
   /**

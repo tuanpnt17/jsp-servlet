@@ -16,7 +16,8 @@
   </head>
   <body>
     <c:set var="c" value="${requestScope.category}" />
-    <div class="m-auto max-w-[500px] p-3 mt-3">
+    <%@include file="header.jsp" %>
+    <div class="mx-auto mt-[45px] max-w-[500px] p-3 mt-3">
       <h2 class="mb-3 text-center text-3xl font-medium uppercase">Update Category</h2>
       <form action="update" method="post" class="grid grid-cols-1">
         <div class="sm:col-span-3 mb-4">

@@ -19,7 +19,8 @@
     <c:set var="cLsit" value="${sessionScope.cList}"/>
     <c:set var="pList" value="${requestScope.pList}"/>
     <div class="max-w-[1240px] m-auto p-4">
-      <div class="header flex justify-center items-center fixed top-0 left-0 right-0 bg-white">
+      <%@include file="header.jsp" %>
+      <div class="header flex justify-center items-center fixed top-[44px] left-0 right-0 bg-white">
         <ul class="header__list flex justify-center gap-x-7">
           <li class="header__item hover:text-orange-500 transition-all cursor-pointer text-xl font-bold py-2">
             <a href="product-list">All</a>
@@ -32,7 +33,7 @@
         </ul>
       </div>
 
-      <div class="wrapper flex justify-center mt-[50px]">
+      <div class="wrapper flex justify-center mt-[100px]">
         <div class="sidebar w-[25%]">
           <form action="product-list">
             <div class="category mb-3">

@@ -20,7 +20,7 @@ public class DBContext {
   public static Connection makeConnection() {
     Connection conn = null;
     try {
-      String dbURL = "jdbc:sqlserver://TUANPNT17\\TUANPNT17;databaseName=Trading2022;encrypt=true;trustServerCertificate=true;";
+      String dbURL = "jdbc:sqlserver://TUANPNT17\\TUANPNT17;databaseName=CartDB;encrypt=true;trustServerCertificate=true;";
       String user = "sa";
       String pass = "123456";
       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -37,7 +37,8 @@ public class DBContext {
       try {
         conn.close();
       } catch (SQLException ex) {
-        Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        Logger.getLogger(DBContext.class.getName())
+                .log(Level.SEVERE, null, ex);
       }
     }
   }
